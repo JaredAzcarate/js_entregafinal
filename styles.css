@@ -1,0 +1,10 @@
+body{
+    height: 100vh;
+    background: black; 
+    color: white; 
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+    text-align: center;
+    display: grid;
+    align-content: center;
+}
