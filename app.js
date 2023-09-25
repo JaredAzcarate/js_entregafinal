@@ -6,6 +6,24 @@ let project3 = '';
 let price = '';
 let timeTotal = '';
 let priceTotal = '';
+let letContinue = '';
+
+function addAnotherProject (){
+    letContinue = '';
+
+    while (true) {
+        letContinue = prompt('¿Deseas agregar otro proyecto? \n *Responde con SI o NO').toLowerCase();
+
+        if (letContinue === 'si') {
+            break;
+        } else if (letContinue === 'no') {
+            break;
+        } else {
+            alert('Por favor, responda con "si" o "no".');
+        }
+    }
+    return letContinue;
+}
 
 /* Promts, alerts and conditionals */
 alert('Timerecords es una aplicación web que tiene como objetivo ayudar a freelacers a facturar según las horas trabajadas y el precio establecido para un cliente.')
@@ -15,8 +33,6 @@ alert('El algoritmo planteado para esta pre entrega tiene como objetivo final: \
 user = prompt('Hola, ¿cuál es tu nombre?');
 
 for(let i = 3; i >= 1; i--) {
-
-    let letContinue = '';
 
     if (i <= 0 ){
         break
@@ -45,17 +61,7 @@ for(let i = 3; i >= 1; i--) {
                 continue;
         }
 
-        while (true) {
-            letContinue = prompt('¿Deseas agregar otro proyecto? \n *Responde con SI o NO').toLowerCase();
-    
-            if (letContinue === 'si') {
-                break;
-            } else if (letContinue === 'no') {
-                break;
-            } else {
-                alert('Por favor, responda con "si" o "no".');
-            }
-        }
+        addAnotherProject();
     
         if (letContinue === 'no') {
             break;
