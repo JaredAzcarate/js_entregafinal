@@ -8,6 +8,16 @@ let timeTotal = '';
 let priceTotal = '';
 let letContinue = '';
 
+function addProject (numProjects){
+    let project = '';
+    do {
+        project = prompt(`Igresa un proyecto nuevo (tienes disponible ${numProjects} proyectos)`);
+    } while (project === '');
+    
+    return project;
+    
+}
+
 function addAnotherProject (){
     letContinue = '';
 
@@ -43,21 +53,15 @@ for(let i = 3; i >= 1; i--) {
         switch (i) {
 
             case 3:
-                do {
-                    project1 = prompt(`Igresa un proyecto nuevo (tienes disponible ${i} proyectos)`);
-                } while (project1 === '');
+                project1 = addProject(i);
                 break;
 
             case 2:
-                do {
-                    project2 = prompt(`Igresa un proyecto nuevo (tienes disponible ${i} proyectos)`);
-                } while (project2 === '');
+                project2 = addProject(i);
                 break;
 
-            case 1:
-                do {
-                    project3 = prompt(`Igresa un proyecto nuevo (tienes disponible ${i} proyectos)`);
-                } while (project3 === '');
+            default:
+                project3 = addProject(i);
                 continue;
         }
 
