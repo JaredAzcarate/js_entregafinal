@@ -1,106 +1,113 @@
-/* Variables necesarias */
-let user = '';
-let project1 = '';
-let project2 = '';
-let project3 = '';
-let price = '';
-let timeTotal = '';
-let priceTotal = '';
-let letContinue = '';
 
-/* Functions */
-function addProject (numProjects){
-    let project = '';
-    do {
-        project = prompt(`Igresa un proyecto nuevo (tienes disponible ${numProjects} proyectos)`);
-    } while (project === '');
+
+class Proyecto {
+    constructor(nombre, precio, id){
+        this.id = id
+        this.nombre = nombre;
+        this.horas = [];
+        this.precio = precio;
+    }
+
+    //Pendiente de crear metodo para sumar horas de trabajo
+
+    //Pendiente de crear metodo para generar una factura en relacion a hora total y precio
+} //Objeto para registrar proyecto
+
+//Variable para almacenar todos los proyectos (como objetos)
+const proyectos = [];
+
+//Variable de fecha general
+const date = new Date ();
+
+//Variable para setear cantidad de proyectos disponibles en version FREE
+let setFree = 3;
+
+// Variable para mostrar cantidad de proyectos disponibles
+let available = setFree;
+
+//Iniciar interacción
+alert(`Hola tienes ${available} proyectos para agregar en tu version Free`)
+
+for(let i = 1 ; i <= setFree; i++){
+    let id = i;
+    let precioProyecto = '';
+    let nombreProyecto = '';
+
+    while(true){
+        nombreProyecto = prompt(`Tienes disponible ${available} proyectos`);
+
+        if (nombreProyecto === ''){
+            alert('Lo siento, debes registrar un valor. Intenta nuevamente.')
+        } else{
+            break
+        }
+    } 
+
+    while(true){
+        precioProyecto = prompt(`¿Cuál es el precio hora para este proyecto? (Solo se permite valor numérico)`);
     
-    return project;
+        if(!isNaN(precioProyecto)) {
+            break
+        }
+        else{
+            alert('Ingresa un valor numérico por favor.')
+        }
+    }
+
+    proyectos.push(new Proyecto(nombreProyecto, precioProyecto, id));
     
+    available--
 }
 
-function addAnotherProject (){
-    letContinue = '';
+// Almacenar y concatenar nombres de proyectos y id para luego poder seleccionarlo
+let nombresProyectos = proyectos.map(proyecto => proyecto.id + ". " + proyecto.nombre + " ")
 
-    while (true) {
-        letContinue = prompt('¿Deseas agregar otro proyecto? \n *Responde con SI o NO').toLowerCase();
+//Seleccionar proyecto por ID yt convertir valor a numero
+let selecProyect = parseInt(prompt(`¿En que proyecto deseas registrar tus horas de trabajo?:\n${nombresProyectos}\n Seleccionar por número`), 10)
 
-        if (letContinue === 'si') {
-            break;
-        } else if (letContinue === 'no') {
-            break;
-        } else {
-            alert('Por favor, responda con "si" o "no".');
-        }
-    }
-    return letContinue;
+//Buscar proyecto seleccionado
+let findProyect = proyectos.find((i) => selecProyect === i.id)
+
+function TimeRegister (){
+    const currentTime = new Date ();
+    let hr = currentTime.getHours();
+    let min = currentTime.getMinutes();
+    let seg = currentTime.getSeconds();
+
+    findProyect.horas.push(`${hr}:${min}:${seg}`);
 }
 
-/* Objects */
-
-
-/* Promts, alerts and conditionals */
-alert('Timerecords es una aplicación web que tiene como objetivo ayudar a freelacers a facturar según las horas trabajadas y el precio establecido para un cliente.')
-
-alert('El algoritmo planteado para esta pre entrega tiene como objetivo final: \n 1.Identificarte \n 2. Añadir nuevo proyecto (hasta 3 proyectos) \n 3. Establecer precio por hora \n 4. Seleccionar proyecto que se desea registrar horario \n 5. Registrar horario y obtener valor (dinero) generado por horas de trabajo \n \n Preciona "Aceptar" para iniciar.')
-
-user = prompt('Hola, ¿cuál es tu nombre?');
-
-for(let i = 3; i >= 1; i--) {
-
-    if (i <= 0 ){
-        break
-    }
-    
-    else{
-        
-        switch (i) {
-
-            case 3:
-                project1 = addProject(i);
-                break;
-
-            case 2:
-                project2 = addProject(i);
-                break;
-
-            default:
-                project3 = addProject(i);
-                continue;
-        }
-
-        addAnotherProject();
-    
-        if (letContinue === 'no') {
-            break;
-        }
-    }
-};
-
+//Registrar inicio de trabajo
 while(true){
-    price = prompt('¿Cuál es el valor de la hora de tu trabajo? (Solo se permite valor numérico)');
+    let setAction = prompt(`Registremos tu hora de entrada del día:${date.toLocaleDateString()}\n\nProyecto: ${findProyect.nombre} \nPrecio por hora: $${findProyect.precio}\n\nPara iniciar el registro de horas escribe "iniciar"`);
 
-    if(!isNaN(price)) {
+    setAction = setAction.toLowerCase();
+
+    if(setAction === 'iniciar'){
+        TimeRegister()
         break
     }
     else{
-        alert('Ingresa un valor numérico por favor.')
+        alert('Al parecer no escribiste bien "iniciar", por favor intenta nuevamente.')
     }
 }
 
-let selectProject = prompt(`${user} estos son tus proyectos:\n ${project1} \n ${project2} \n ${project3}\n \n ¿En cuál deseas registrar tus horas trabajadas? (Escribe el nombre del proyecto)`);
 
+//Registrar salida de trabajo 
 while(true){
-    timeTotal = Number(prompt('¿Cuántas horas trabajaste en este proyecto? (Solo se permite valor numérico)'));
+    let setAction = prompt(`Registremos tu hora de salida del día:${date.toLocaleDateString()}\n\nProyecto: ${findProyect.nombre} \nPrecio por hora: ${findProyect.precio}\n\nPara finalizar el registro de horas escribe "finalizar"`);
 
-    if(!isNaN(timeTotal)) {
+    setAction = setAction.toLowerCase();
+
+    if(setAction === 'finalizar'){
+        TimeRegister()
         break
     }
     else{
-        alert('Ingresa un valor numérico por favor.')
+        alert('Al parecer no escribiste bien "finalizar", por favor intenta nuevamente.')
     }
 }
 
-priceTotal = timeTotal * price;
+let showHours = findProyect.horas;
 
-alert(`${user} en el proyecto "${selectProject}" generaste un total de $${priceTotal} por ${timeTotal}hs trabajadas.`)
+alert(`⌚ Tu horario de entrada fue: ${showHours[0]}\n\n⌚ Tu horario de salida fue: ${showHours[1]}\n\nEn la proxima entrega podras ver el total a cobrar por el tiempo trabajado 😉`);
