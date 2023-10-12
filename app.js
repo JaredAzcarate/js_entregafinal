@@ -8,6 +8,7 @@ let timeTotal = '';
 let priceTotal = '';
 let letContinue = '';
 
+/* Functions */
 function addProject (numProjects){
     let project = '';
     do {
@@ -34,6 +35,9 @@ function addAnotherProject (){
     }
     return letContinue;
 }
+
+/* Objects */
+
 
 /* Promts, alerts and conditionals */
 alert('Timerecords es una aplicación web que tiene como objetivo ayudar a freelacers a facturar según las horas trabajadas y el precio establecido para un cliente.')
@@ -100,4 +104,3 @@ while(true){
 priceTotal = timeTotal * price;
 
 alert(`${user} en el proyecto "${selectProject}" generaste un total de $${priceTotal} por ${timeTotal}hs trabajadas.`)
-
