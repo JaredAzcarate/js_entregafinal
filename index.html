@@ -8,9 +8,65 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script defer src="app.js"></script>
 </head>
 <body>
-    <h1>Pre entrega 2 | <strong>Jared Azcárate</strong></h1>
+    <section class="section-main text-white">
+        <div class="modal">
+            <div class="box-interaction border-sm" id="boxInteraction">
+                <div>
+                    <h1 class="font-light mb-xl h1">Create a <br><span class="text-yellow font-bold">new project</span></h1>
+                    <p class="text-grey">Tienes <span class="text-yellow" id="text_number_projects"></span> para agregar en tu version Free</p>
+                </div>
+    
+                <div class="box-interaction_inputs">
+                    <div>
+                        <p class="mb-sm">Name project</p>
+                        <input type="text" placeholder="ex: Creative Agency" class="input-xl border-sm" id="inputProject_name">
+                    </div>
+                    <div>
+                        <p class="mb-sm">Price per hour</p>
+                        <input type="number" placeholder="$25" class="input-xl border-sm" id="inputProject_price">
+                    </div>
+                </div>
+    
+                <button onclick="addProjectsFree( 'sectionProjects','boxInteraction')" class="button-outline border-sm">Next</button>
+    
+            </div>
+        </div>
+            
+        <main class="hidden" id="sectionProjects">
+            <div class="box-project_tittle">
+                <h1 class="font-light mb-xl">Select a project to<br><span class="text-yellow font-bold">record your schedules:</span></h1>
+                <button class="button-outline button-sm border-sm" onclick="removeAllProjects()">Clean my board</button>
+            </div>
+            <div class="box-project_resume_overlay">
+            <div class="board-projects" id="boardProjects">
+                <!-- <article class="box-project_resume border-sm">
+
+                    <div>
+                        <p class="font-light h2">Project:</p>
+                        <p class="font-bold h2" id="box-project_name"></p>
+                    </div>
+
+                    <div class="box-project_resume-information">
+                        <div class="box-project_resume-information_head">
+                            <p class="p-small">Dates</p>
+                            <p class="p-small">Total hours</p>
+                            <p class="p-small">Generate</p>
+                        </div>
+                    </div>
+
+                    <button class="button-outline border-sm">Show More</button>
+
+                </article> -->
+            </div>
+            </div>
+        </main>
+    </section>
+    
 </body>
 </html>
