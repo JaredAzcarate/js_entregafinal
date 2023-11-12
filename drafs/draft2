@@ -1,0 +1,92 @@
+
+let hr;
+let min;
+let sec;
+let count = '';
+let running = false;
+let record;
+
+let hours;
+let minutes;
+let seconds;
+let startPauseButton;
+let pausedTime;
+let restart;
+
+
+
+function startTime(idBoxTimer) {
+    restart = false;
+    startPauseButton = document.getElementById(`startPause-${idBoxTimer}`);
+    hours = document.getElementById(`hours-${idBoxTimer}`);
+    minutes = document.getElementById(`minutes-${idBoxTimer}`);
+    seconds = document.getElementById(`seconds-${idBoxTimer}`);
+    hr = pausedTime ? pausedTime.hr : 0;
+    min = pausedTime ? pausedTime.min : 0;
+    sec = pausedTime ? pausedTime.sec : 0;
+    startPauseButton.innerText = 'Pause';
+
+    function formatTwoDigits(value) {
+        return value < 10 ? `0${value}` : value;
+    }
+
+    count = setInterval(()=>{
+        sec++
+        if (sec === 60) {
+            sec = 0;
+            min++
+
+            if(min === 60){
+                min = 0;
+                hr++
+            }
+        }
+
+        let formattedHours = formatTwoDigits(hr);
+        let formattedMinutes = formatTwoDigits(min);
+        let formattedSeconds = formatTwoDigits(sec);
+
+        hours.innerText = formattedHours;
+        minutes.innerText = formattedMinutes;
+        seconds.innerText = formattedSeconds;
+
+        record = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+
+    },1000)
+    
+    console.log('Start');
+    
+}
+
+function pauseTime(idBoxTimer) {
+    startPauseButton = document.getElementById(`startPause-${idBoxTimer}`);
+    startPauseButton.innerText = 'continue';
+    
+    clearInterval(count);
+    pausedTime = { hr, min, sec };
+    console.log('Pause');
+    console.log(record);
+}
+
+function stopTime(idBoxTimer) {
+    startPauseButton = document.getElementById(`startPause-${idBoxTimer}`);
+    startPauseButton.innerText = 'Start';
+    restart = true;
+    clearInterval(count)
+    hr, min, sec = 0;
+    hours.innerText, minutes.innerText, seconds.innerText = '00';
+    console.log('Stop');
+    console.log(record);
+    
+}
+
+function startPauseFunction(idBoxTimer) {
+    running = !running;
+    
+
+    if(running || restart){
+        startTime(idBoxTimer)
+    }else{
+        pauseTime(idBoxTimer)
+    }
+}

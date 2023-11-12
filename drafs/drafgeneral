@@ -1,0 +1,51 @@
+        startButton = document.getElementById(`startButton-${idBoxTimer}`);
+        pauseButton = document.getElementById(`pauseButton-${idBoxTimer}`);
+        stopButton = document.getElementById(`stopButton-${idBoxTimer}`);
+    
+        startButton.classList.add('hidden')
+        pauseButton.classList.remove('hidden')
+        stopButton.classList.remove('hidden')
+    
+        if (this.pausedTime) {
+            this.hr = pausedTime.hr;
+            this.min = pausedTime.min;
+            this.sec = pausedTime.sec;
+    
+        } else {
+            this.hr;
+            this.min;
+            this.sec;
+        }
+        
+        this.hours = document.getElementById(`hours-${idBoxTimer}`);
+        this.minutes = document.getElementById(`minutes-${idBoxTimer}`);
+        this.seconds = document.getElementById(`seconds-${idBoxTimer}`);
+    
+        function formatTwoDigits(value) {
+            return value < 10 ? `0${value}` : value;
+        }
+    
+        this.timeInterval = setInterval(()=>{
+            this.sec++
+            if (this.sec === 60) {
+                this.sec = 0;
+                this.min++
+    
+                if(this.min === 60){
+                    this.min = 0;
+                    this.hr++
+                }
+            }
+    
+            let formattedHours = formatTwoDigits(this.hr);
+            let formattedMinutes = formatTwoDigits(this.min);
+            let formattedSeconds = formatTwoDigits(this.sec);
+    
+            this.hours.innerText = formattedHours;
+            this.minutes.innerText = formattedMinutes;
+            this.seconds.innerText = formattedSeconds;
+    
+            this.record = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    
+        },1000)
+ 

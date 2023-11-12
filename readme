@@ -1,16 +1,2 @@
-// Segunda pre-entrega //
-- Variables de JS necesarias. 
-- Funciones esenciales del proceso a simular.
-- Objetos de JS.
-- Arrays.
-- Métodos de búsqueda y filtrado sobre el Array.
-
-Para esta app necesito:
-* Registrar proyecto (nombre de proyecto, precio de hora establecido)
-    - Para esto voy a usar un objeto constructor, ya que voy a crear varios proyectos y todos se componen con los mismo items.
-    - Todos los proyectos se van a almacenar en un array.
-
-* Elegir proyecto y registrar hora de inicio de actividad, pausas y hora final.
-    - Para esto voy recorrer el array de proyectos y utilizar un metodo para filtrar en base a lo que se seleccione.
-
-* Las horas trabajadas
+// Entrega final //
+- Generar proyectos y poder registrar el tiempo, el total generado en base a lprecio establecido por hora.

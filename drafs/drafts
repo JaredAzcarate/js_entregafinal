@@ -1,0 +1,75 @@
+
+let hr;
+let min;
+let sec;
+let hours = document.getElementById('hours');
+let minutes = document.getElementById('minutes');
+let seconds = document.getElementById('seconds');
+let startPauseButton = document.getElementById('startPause');
+let count = '';
+let running = false;
+let record;
+
+function startTime() {
+    hr = 0;
+    min = 0;
+    sec = 0;
+    startPauseButton.innerText = 'Pause';
+
+    function formatTwoDigits(value) {
+        return value < 10 ? `0${value}` : value;
+    }
+
+    count = setInterval(()=>{
+        sec++
+        if (sec === 60) {
+            sec = 0;
+            min++
+
+            if(min === 60){
+                min = 0;
+                hr++
+            }
+        }
+
+        let formattedHours = formatTwoDigits(hr);
+        let formattedMinutes = formatTwoDigits(min);
+        let formattedSeconds = formatTwoDigits(sec);
+
+        hours.innerText = formattedHours;
+        minutes.innerText = formattedMinutes;
+        seconds.innerText = formattedSeconds;
+
+        record = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+
+    },1000)
+    
+    console.log('Start');
+    
+}
+
+function pauseTime() {
+    startPauseButton.innerText = 'continue';
+    clearInterval(count)
+    console.log('Pause');
+}
+
+function stopTime() {
+    startPauseButton.innerText = 'Start';
+    clearInterval(count)
+    hr, min, sec = 0;
+    hours.innerText, minutes.innerText, seconds.innerText = '00';
+    console.log('Stop');
+    console.log(record);
+    
+}
+
+function startPauseFunction() {
+    running = !running;
+
+    if(running){
+        startTime()
+    }else{
+        pauseTime()
+    }
+}

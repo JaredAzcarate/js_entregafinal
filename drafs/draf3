@@ -1,0 +1,358 @@
+
+//Objeto constructor para registrar proyecto
+class Proyecto {
+    constructor(nombre, precio, id, time){
+        this.id = id
+        this.nombre = nombre;
+        this.time = [];
+        this.precio = precio;
+    }
+
+    
+
+} 
+
+let counters = {};
+
+//Variable para anidar los contenidos al board de proyectos
+let boardProjects = document.getElementById('boardProjects');
+
+//Variable para almacenar todos los proyectos (como objetos)
+const proyectos = [];
+
+//Variable de fecha general (Todavia no la aplique en esta entrega)
+const date = new Date ();
+
+//Variable para setear cantidad de proyectos disponibles en version FREE
+let setFree = 2;
+
+// Variables para mostrar cantidad de proyectos disponibles
+let available = setFree;
+
+let text_number_projects = document.getElementById('text_number_projects');
+
+text_number_projects.innerText = available + ' proyectos';
+
+//Funciones de animación 
+function moveIn(id) {
+    let elementToMove = document.getElementById(id);
+
+    setTimeout(()=>{
+        elementToMove.classList.remove('hidden');
+        elementToMove.classList.add('move-in');
+    }, 500);
+}
+
+function moveOut(id) {
+    let elementToMove = document.getElementById(id);
+    elementToMove.classList.add('move-out');
+
+    setTimeout(() => {
+        elementToMove.style.display = 'none';
+    }, 1000);
+}
+
+//Funciones relacionadas a la box del proyecto
+function openProject(projectId) {
+    let openBox = document.getElementById(`boxProject-${projectId}`)
+    let timerBox = document.getElementById(`boxTimer-${projectId}`)
+    let openButton = document.getElementById(`buttonOpenProject-${projectId}`)
+    let closeButton = document.getElementById(`buttonCloseProject-${projectId}`)
+
+    openBox.classList.add('box-project_resume-active')
+    timerBox.classList.remove('hidden')
+    openButton.classList.add('hidden')
+    closeButton.classList.remove('hidden')
+}
+
+function closeProject(projectId) {
+    let openBox = document.getElementById(`boxProject-${projectId}`)
+    let timerBox = document.getElementById(`boxTimer-${projectId}`)
+    let openButton = document.getElementById(`buttonOpenProject-${projectId}`)
+    let closeButton = document.getElementById(`buttonCloseProject-${projectId}`)
+
+    openBox.classList.remove('box-project_resume-active')
+    timerBox.classList.add('hidden')
+    openButton.classList.remove('hidden')
+    closeButton.classList.add('hidden')
+}
+
+//Funciones relacionadas al board de los proyectos
+function updateBoardProjects() {
+    //Se almacenan los datos del storage en una variable para luego ser usada (me sucedia que me daba error cuando estaba vacio entonces investigue y agregue "|| []") 
+    let proyectosCargados = JSON.parse(localStorage.getItem('proyectos')) || [];
+
+    //Se concatena los 2 arrays que guardan los proyectos nuevos y antiguos
+    let proyectosTotales = [...proyectosCargados, ...proyectos];
+    
+    proyectosTotales.map(item => {
+        //Por cada item debe crear una nueva variable con el nombre del proyecto almacenado en el array proyectos
+        let newBoxArticle = document.createElement('div');
+        newBoxArticle.innerHTML = `
+        <article class="box-project_resume border-sm" id="boxProject-${item.id}">
+
+        <!-- Head de caja de proyecto -->
+        <div class="box-project_resume-content">
+            <div class="box-project_resume-head">
+                <div>
+                    <p class="font-light h2">Project:</p>
+                    <p class="font-bold h2 mb-sm" id="box-project_name">${item.nombre}</p>
+                </div>
+            </div>
+
+
+            <div class="box-project_resume-information">
+
+                <div class="box-project_resume-information_head">
+
+                    <div>
+                        <p class="p-small">Dates</p>
+                        <div class="p-small" id="dateBoard-${item.id}"></div>
+                    </div>
+
+                    <div>
+                        <p class="p-small">Total hours</p>
+                        <div class="p-small" id="timeBoard-${item.id}">
+                            <div>${item.time.map(show=>show.record)}</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="p-small">Generate</p>
+                        <div class="p-small" id="generateBoard"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Temporizador -->
+        <div class="box-project_resume-content hidden" id="boxTimer-${item.id}">
+            <div class="box-project_resume-box_timer">
+                <div class=" border-sm">
+                    <p class="h1 font-light"><span id="hours-${item.id}">00</span>:<span id="minutes-${item.id}">00</span>:<span id="seconds-${item.id}">00</span></p>
+                </div>
+                <div class="box-project_resume-box_timer-controls">
+                    <button class="button-outline button-outline_yellow border-sm" onclick="startTime('${item.id}')" id="startButton-${item.id}">Let's start</button>
+                    <button class="button-outline button-outline_yellow border-sm hidden" onclick="pauseTime('${item.id}')" id="pauseButton-${item.id}">Pause</button>
+                    <button class="button-outline button-outline_yellow border-sm hidden" onclick="stopTime('${item.id}')" id="stopButton-${item.id}">Stop</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button para cerrar proyecto -->
+        <button class="box-project_resume-button_close hidden" id="buttonCloseProject-${item.id}" onclick="closeProject('${item.id}')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+              </svg>
+        </button>
+
+        <!-- Button para abrir proyecto -->
+        <button class="button-outline border-sm animate-box" id="buttonOpenProject-${item.id}" onclick="openProject('${item.id}')" >Show More</button>
+
+    </article>`;;
+        boardProjects.appendChild(newBoxArticle)
+    } )
+
+    //Se almacena en el storage el spread de arrays "proyectos y proyectos cargados"
+    //localStorage.setItem('proyectos', JSON.stringify(proyectosTotales));
+
+}
+
+function removeAllProjects() {
+
+    //Se elimina todos los proyectos del storage y se recarga la pagina
+    localStorage.clear()
+
+    location.reload();
+
+}
+
+//Funciones relacionadas al modal para añadir nuevo proyecto
+function addNewProject (){
+    let project_name = document.getElementById('inputProject_name').value;
+    let project_price = document.getElementById('inputProject_price').value;
+
+    //Se crea nuevo proyecto utilizando la clase constructora y se agrega al array de proyectos
+    proyectos.push(new Proyecto(project_name, project_price, project_name));
+    return proyectos;
+}
+
+function addProjectsFree(setClassIn,setClassOut) {
+
+    if (proyectos.length === setFree - 1 ){
+        addNewProject()
+        moveIn(setClassIn)
+        moveOut(setClassOut)
+        updateBoardProjects()
+        console.log(proyectos.map(item => item.nombre));
+    } else{
+        addNewProject()
+    }
+
+    //Restar el numero de la variable "available" y cambio de estado en texto "available" 
+    available--
+
+    text_number_projects.innerText = available + ' proyectos';
+
+    //Resetear el valor de los inputs
+    document.getElementById('inputProject_name').value = '';
+
+    document.getElementById('inputProject_price').value = '';
+    
+    return;
+
+}
+
+let hr;
+let min;
+let sec;
+let count = '';
+let running = false;
+let record;
+
+let hours;
+let minutes;
+let seconds;
+let startPauseButton;
+let pausedTime;
+let restart;
+
+let startButton;
+let pauseButton;
+let stopButton;
+
+
+function startTime(idBoxTimer) {
+    let countName = `count-${idBoxTimer}`;
+
+    startButton = document.getElementById(`startButton-${idBoxTimer}`);
+    pauseButton = document.getElementById(`pauseButton-${idBoxTimer}`);
+    stopButton = document.getElementById(`stopButton-${idBoxTimer}`);
+
+    startButton.classList.add('hidden')
+    pauseButton.classList.remove('hidden')
+    stopButton.classList.remove('hidden')
+
+    if (pausedTime) {
+        hr = pausedTime.hr;
+        min = pausedTime.min;
+        sec = pausedTime.sec;
+
+    } else{
+        hr = 0;
+        min = 0;
+        sec = 0;
+    }
+
+    hours = document.getElementById(`hours-${idBoxTimer}`);
+    minutes = document.getElementById(`minutes-${idBoxTimer}`);
+    seconds = document.getElementById(`seconds-${idBoxTimer}`);
+
+    function formatTwoDigits(value) {
+        return value < 10 ? `0${value}` : value;
+    }
+
+    counters[countName] = setInterval(()=>{
+        sec++
+        if (sec === 60) {
+            sec = 0;
+            min++
+
+            if(min === 60){
+                min = 0;
+                hr++
+            }
+        }
+
+        let formattedHours = formatTwoDigits(hr);
+        let formattedMinutes = formatTwoDigits(min);
+        let formattedSeconds = formatTwoDigits(sec);
+
+        hours.innerText = formattedHours;
+        minutes.innerText = formattedMinutes;
+        seconds.innerText = formattedSeconds;
+
+        record = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+
+    },1000)
+    
+    console.log('Start');
+    
+}
+
+function pauseTime(idBoxTimer) {
+    let countName = `count-${idBoxTimer}`;
+
+    startButton = document.getElementById(`startButton-${idBoxTimer}`);
+    pauseButton = document.getElementById(`pauseButton-${idBoxTimer}`);
+
+    startButton.classList.remove('hidden')
+    pauseButton.classList.add('hidden');
+
+    startButton.innerText = 'Continue';
+
+    clearInterval(counters[countName]);
+    pausedTime = { hr, min, sec };
+    console.log('Pause');
+    console.log(record);
+    console.log(pausedTime);
+}
+
+function stopTime(idBoxTimer) {
+    let countName = `count-${idBoxTimer}`;
+
+    startButton = document.getElementById(`startButton-${idBoxTimer}`);
+    pauseButton = document.getElementById(`pauseButton-${idBoxTimer}`);
+    stopButton = document.getElementById(`stopButton-${idBoxTimer}`);
+
+    startButton.classList.remove('hidden');
+    pauseButton.classList.add('hidden');
+    stopButton.classList.add('hidden');
+
+    startButton.innerText = "Let's start";
+
+    updateBoardProjectFunction(idBoxTimer,record)
+
+    clearInterval(counters[countName])
+    hr, min, sec = 0;
+    pausedTime = { hr, min, sec };
+    hours.innerText, minutes.innerText, seconds.innerText = '00';
+    console.log('Stop');
+    console.log(record);
+    
+}
+
+function updateBoardProjectFunction(id, record) {
+    //Identificar proyecto
+    const proyecto = proyectos.find(item => item.id === id);
+
+    //Agregar fechas y horas a las listas
+    const dateRecord = new Date();
+    let newRecord = record
+    let newDate = `${dateRecord.getFullYear()}/${dateRecord.getMonth()}/${dateRecord.getDay()}`;
+    proyecto.time.push({ date: newDate, record: newRecord });
+
+    let timeBoard = document.getElementById(`timeBoard-${id}`);
+    let dateBoard = document.getElementById(`dateBoard-${id}`);
+
+    timeBoard.innerHTML = '';
+    dateBoard.innerHTML = '';
+
+    proyecto.time.forEach(show => {
+        const itemTime = document.createElement('div');
+        const itemDate = document.createElement('div');
+
+        itemTime.textContent = show.record;
+        itemDate.textContent = show.date;
+
+        timeBoard.appendChild(itemTime);
+        dateBoard.appendChild(itemDate);
+    });
+    
+}
+
+function stopTimeFunction(id) {
+    console.log(`stop ${id}`);
+}
+

@@ -29,7 +29,14 @@
                     </div>
                     <div>
                         <p class="mb-sm">Price per hour</p>
-                        <input type="number" placeholder="$25" class="input-xl border-sm" id="inputProject_price">
+                        <input type="number" placeholder="25" class="input-xl border-sm" id="inputProject_price">
+                    </div>
+                    <div>
+                        <select class="input-xl border-sm" id="inputProject_change">
+                            <option value="$" selected>$</option>
+                            <option value="€" >€</option>
+                            <option value="ARS">ARS</option>
+                        </select>
                     </div>
                 </div>
     
@@ -43,26 +50,11 @@
                 <h1 class="font-light mb-xl">Select a project to<br><span class="text-yellow font-bold">record your schedules:</span></h1>
                 <button class="button-outline button-sm border-sm" onclick="removeAllProjects()">Clean my board</button>
             </div>
+
             <div class="box-project_resume_overlay">
+
             <div class="board-projects" id="boardProjects">
-                <!-- <article class="box-project_resume border-sm">
-
-                    <div>
-                        <p class="font-light h2">Project:</p>
-                        <p class="font-bold h2" id="box-project_name"></p>
-                    </div>
-
-                    <div class="box-project_resume-information">
-                        <div class="box-project_resume-information_head">
-                            <p class="p-small">Dates</p>
-                            <p class="p-small">Total hours</p>
-                            <p class="p-small">Generate</p>
-                        </div>
-                    </div>
-
-                    <button class="button-outline border-sm">Show More</button>
-
-                </article> -->
+                <!-- Caja de proyecto -->
             </div>
             </div>
         </main>

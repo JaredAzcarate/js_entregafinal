@@ -31,6 +31,12 @@ p{
     display: none !important;
 }
 
+*:disabled,
+*:disabled:hover {
+  opacity: 0.4; /* Cambiado a un valor entre 0 y 1 */
+  cursor: auto;
+}
+
 .p-small{
     font-size: small;
 }
@@ -95,6 +101,13 @@ p{
     opacity: 80%;
 }
 
+.button-outline_yellow:hover{
+    background: var(--yellow);
+    color: black;
+    opacity: 100%;
+    border: solid 1px var(--yellow);
+}
+
 .button-sm{
     max-width: 150px;
 }
@@ -125,6 +138,7 @@ p{
 
 .box-interaction_inputs{
     display: flex;
+    align-items: end;
     gap: 10px;
 }
 
@@ -166,13 +180,23 @@ p{
 
 .box-project_resume{
     display: flex;
+    width: 230px;
     flex-direction: column;
     gap: 10px;
     background: var(--black-200);
     border: 1px solid var(--black-200);
     color: white;
     padding: 20px;
-    transition: .2s ease-in-out;
+    transition: .5s ease-in-out;
+}
+
+.box-project_resume-content{
+    width: 100%;
+}
+
+.box-project_resume-head{
+    display: flex;
+    justify-content: space-between;
 }
 
 .box-project_tittle{
@@ -188,9 +212,56 @@ p{
 .box-project_resume-information_head{
     display: flex;
     height: 300px;
-    width: 200px;
     justify-content: space-between;
     overflow: hidden;
+}
+
+.box-project_resume-active{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 650px;
+    border: 1px solid var(--yellow);
+    background: var(--black-200);
+    color: white;
+}
+
+.box-project_resume-box_timer{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 10px;
+}
+
+.box-project_resume-box_timer-controls{
+    display: flex;
+    gap: 5px;
+}
+
+.box-project_resume-button_close{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    right: -25px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background: var(--grey-400);
+    border: solid 5px black;
+    color: white;
+}
+
+.box-generate{
+    padding: 10px 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    border-top: solid .1px var(--grey-200);
 }
 
 .move-out{
@@ -199,6 +270,10 @@ p{
 
 .move-in{
     animation: move-in 1.5s;
+}
+
+.animate-box{
+    animation: animateBox 1s;
 }
 
 @keyframes move-out {
@@ -211,4 +286,9 @@ p{
     0% {transform: translate(-70%); opacity: 0;}
     50% {transform: translate(-70%); opacity: 0;}
     100% {transform: translate(0%); opacity: 1;}
+}
+
+@keyframes animateBox {
+    0%{transform: translateY(-50%); opacity: 0;}
+    100%{transform: translateY(0%); opacity: 1;}
 }
