@@ -104,7 +104,6 @@ class Proyecto {
     
         startButton.classList.add('hidden');
         pauseButton.classList.add('hidden');
-    
         
         stopButton.innerText = "Recording...";
     
@@ -123,6 +122,8 @@ class Proyecto {
 
             stopButton.innerText = "Stop";
             startButton.innerText = "Let's start";
+
+            localStorage.setItem('proyectos', JSON.stringify(proyectos))
         },1000)
 
         console.log('Stop');
@@ -160,6 +161,18 @@ class Proyecto {
             this.total = proyecto.generate.reduce((acumulador, item) => acumulador + item.totalGenerate, 0);
 
             boxTotalGenerate.innerText = this.change + this.total.toFixed(2);
+
+            Toastify({
+                text: `Today you was generate ${this.change}${this.total}`,
+                duration: 3000,
+                gravity: "bottom", // `top` or `bottom`
+                position: "left", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                  background: "#FFE814",
+                  color: "black",
+                },
+              }).showToast();
         })
     }
 
@@ -180,7 +193,7 @@ const proyectos = [];
 const date = new Date ();
 
 //Variable para setear cantidad de proyectos disponibles en version FREE
-let setFree = 3;
+let setFree = 1;
 
 // Variables para mostrar cantidad de proyectos disponibles
 let available = setFree;
@@ -201,6 +214,7 @@ function moveIn(id) {
 
 function moveOut(id) {
     let elementToMove = document.getElementById(id);
+    elementToMove.classList.remove('move-in');
     elementToMove.classList.add('move-out');
 
     setTimeout(() => {
@@ -214,11 +228,13 @@ function openProject(projectId) {
     let timerBox = document.getElementById(`boxTimer-${projectId}`)
     let openButton = document.getElementById(`buttonOpenProject-${projectId}`)
     let closeButton = document.getElementById(`buttonCloseProject-${projectId}`)
+    let removeButton = document.getElementById(`removeProject-${projectId}`)
 
     openBox.classList.add('box-project_resume-active')
     timerBox.classList.remove('hidden')
     openButton.classList.add('hidden')
     closeButton.classList.remove('hidden')
+    removeButton.classList.add('hidden')
 }
 
 function closeProject(projectId) {
@@ -226,27 +242,28 @@ function closeProject(projectId) {
     let timerBox = document.getElementById(`boxTimer-${projectId}`)
     let openButton = document.getElementById(`buttonOpenProject-${projectId}`)
     let closeButton = document.getElementById(`buttonCloseProject-${projectId}`)
+    let removeButton = document.getElementById(`removeProject-${projectId}`)
 
     openBox.classList.remove('box-project_resume-active')
     timerBox.classList.add('hidden')
     openButton.classList.remove('hidden')
     closeButton.classList.add('hidden')
+    removeButton.classList.remove('hidden')
 }
 
 //Funciones relacionadas al board de los proyectos
 function updateBoardProjects() {
-    //Se almacenan los datos del storage en una variable para luego ser usada (me sucedia que me daba error cuando estaba vacio entonces investigue y agregue "|| []") 
-    let proyectosCargados = JSON.parse(localStorage.getItem('proyectos')) || [];
 
-    //Se concatena los 2 arrays que guardan los proyectos nuevos y antiguos
-    let proyectosTotales = [...proyectosCargados, ...proyectos];
+    const proyectosGuardados = JSON.parse(localStorage.getItem('proyectos')) || [];
+
+    proyectos.push(...proyectosGuardados);
     
-    proyectosTotales.map(item => {
+    proyectos.map(item => {
         //Por cada item debe crear una nueva variable con el nombre del proyecto almacenado en el array proyectos
         let newBoxArticle = document.createElement('div');
         newBoxArticle.innerHTML = `
         <article class="box-project_resume border-sm" id="boxProject-${item.id}">
-
+        <div class="remove-project" id="removeProject-${item.id}" onclick="removeElement('boxProject-${item.id}')">x</div>
         <!-- Head de caja de proyecto -->
         <div class="box-project_resume-content">
             <div class="box-project_resume-head">
@@ -314,9 +331,6 @@ function updateBoardProjects() {
         boardProjects.appendChild(newBoxArticle)
     } )
 
-    //Se almacena en el storage el spread de arrays "proyectos y proyectos cargados"
-    localStorage.setItem('proyectos', JSON.stringify(proyectosTotales));
-
 }
 
 function removeAllProjects() {
@@ -326,6 +340,28 @@ function removeAllProjects() {
 
     location.reload();
 
+}
+
+function removeElement(id) {
+    let selectElementToRemove = document.getElementById(`${id}`);
+
+    selectElementToRemove.remove()
+
+}
+
+function addProject(id) {
+    let boxModal = document.getElementById('boxInteraction')
+    let textModal = document.getElementById('textModal')
+    let removeModal = document.getElementById('removeModal')
+
+    textModal.style.display = 'none'
+    removeModal.classList.remove('hidden')
+    
+    setTimeout(() => {
+        boxModal.style.display = 'inline'
+    }, 500)
+    
+    moveIn('boxInteraction')
 }
 
 //Funciones relacionadas al modal para añadir nuevo proyecto
@@ -399,7 +435,7 @@ function updateBoardProjectFunction(idBoxTimer, record, hr, min, sec) {
     let hrRecord = hr;
     let minRecord = min;
     let secRecord = sec;
-    let newDate = `${dateRecord.getDay()}/${dateRecord.getMonth()}/${dateRecord.getFullYear()}`;
+    let newDate = `${dateRecord.getDate()}/${dateRecord.getMonth() + 1}/${dateRecord.getFullYear()}`;
     proyecto.time.push({ date: newDate, record: newRecord, hours: hrRecord, minutes: minRecord, seconds: secRecord });
 
     let timeBoard = document.getElementById(`timeBoard-${idBoxTimer}`);

@@ -11,15 +11,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script defer src="app.js"></script>
+
 </head>
 <body>
     <section class="section-main text-white">
         <div class="modal">
             <div class="box-interaction border-sm" id="boxInteraction">
+                <div class="remove-project hidden" id="removeModal" onclick="moveOut('boxInteraction')">x</div>
                 <div>
                     <h1 class="font-light mb-xl h1">Create a <br><span class="text-yellow font-bold">new project</span></h1>
-                    <p class="text-grey">Tienes <span class="text-yellow" id="text_number_projects"></span> para agregar en tu version Free</p>
+                    <p class="text-grey" id="textModal">Tienes <span class="text-yellow" id="text_number_projects"></span> para agregar en tu version Free</p>
                 </div>
     
                 <div class="box-interaction_inputs">
@@ -40,7 +43,7 @@
                     </div>
                 </div>
     
-                <button onclick="addProjectsFree( 'sectionProjects','boxInteraction')" class="button-outline border-sm">Next</button>
+                <button onclick="addProjectsFree( 'sectionProjects','boxInteraction')" class="button-outline mt border-sm">Next</button>
     
             </div>
         </div>
@@ -48,7 +51,10 @@
         <main class="hidden" id="sectionProjects">
             <div class="box-project_tittle">
                 <h1 class="font-light mb-xl">Select a project to<br><span class="text-yellow font-bold">record your schedules:</span></h1>
-                <button class="button-outline button-sm border-sm" onclick="removeAllProjects()">Clean my board</button>
+                <div class="cta-board">
+                    <!-- <button class="button-yellow button-sm border-sm" onclick="addProject()">Add new project</button> -->
+                    <button class="button-outline button-sm border-sm" onclick="removeAllProjects()">Clear all</button>
+                </div>
             </div>
 
             <div class="box-project_resume_overlay">
@@ -59,6 +65,6 @@
             </div>
         </main>
     </section>
-    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 </html>
